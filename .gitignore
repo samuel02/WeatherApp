@@ -1,0 +1,14 @@
+*.class
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Package Files #
+*.jar
+*.war
+*.ear
