@@ -5,57 +5,96 @@ import app.controllers.AbstractController;
 import app.controllers.ApplicationController;
 import app.models.Place;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class NavigationViewPanel extends AbstractViewPanel {
+    ApplicationController controller;
 
     public NavigationViewPanel(final ApplicationController controller) {
-        controller.addView(this);
+        this.controller = controller;
+        this.controller.addView(this);
+        setupPane();
+    }
 
+    public void setupPane() {
         FlowLayout layout = new FlowLayout();
         layout.setHgap(0);
         layout.setVgap(0);
         this.setLayout(layout);
 
-        Dimension d = new Dimension(200, 300);
+        Dimension d = new Dimension(200, 400);
         this.setSize(d);
         this.setPreferredSize(d);
-        this.setBackground(Color.WHITE);
+        this.setBackground(new Color(244, 244, 244));
+        this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(204, 204, 204)));
 
-        Border appNamePaddingBorder = BorderFactory.createEmptyBorder(30,0,30,0);
-        Font appNameFont = new Font("Helvetica Neue", Font.PLAIN, 26);
+        try {
+            addLogo();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not find logo image.");
+        }
+        addPlacesToNavigation();
+    }
 
-        JLabel appName = new JLabel("WeatherApp");
+    private void addLogo() throws IOException {
+        BufferedImage logo = ImageIO.read(new File("logo.png"));
+        JLabel logoLabel = new JLabel(new ImageIcon(logo));
+        this.add(logoLabel);
+    }
 
-        appName.setBorder(appNamePaddingBorder);
-        appName.setFont(appNameFont);
+    private void addPlacesToNavigation() {
+        Box box = Box.createVerticalBox();
+        box.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 204, 204)));
 
-        this.add(appName);
 
-        Dimension labelDimension = new Dimension(200, 40);
+        JLabel placesTitle = new JLabel("PLACES");
+        placesTitle.setFont(new Font("Helvetica Neue", Font.BOLD, 10));
+        placesTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        placesTitle.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
+        box.add(placesTitle);
+
+        Dimension labelDimension = new Dimension(200, 30);
         Border paddingBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-        Border labelBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
-        Font labelFont = new Font("Helvetica Neue", Font.PLAIN, 16);
+        Border labelBorder = BorderFactory.createMatteBorder(1, 0, 0, 1, new Color(204, 204, 204));
+        Font labelFont = new Font("Helvetica Neue", Font.PLAIN, 12);
+        Color labelBackgroundColor = new Color(232, 232, 232);
+        Color labelColor = new Color(51, 51, 51);
 
         for(Place p : controller.getPlaces()) {
 
             JLabel label = new JLabel(p.getName());
 
             label.setPreferredSize(labelDimension);
+            label.setMaximumSize(labelDimension);
             label.setFont(labelFont);
             label.setBorder(BorderFactory.createCompoundBorder(labelBorder, paddingBorder));
-
+            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            label.setBackground(labelBackgroundColor);
+            label.setForeground(labelColor);
+            label.setOpaque(true);
             label.addMouseListener(new NavigationMouseListener(controller, p.getId()));
 
-            this.add(label);
+            box.add(label);
         }
+
+        this.add(box);
     }
+
+    public void modelPropertyChange(PropertyChangeEvent evt) {
+        revalidate();
+        repaint();
+    }
+
 
     class NavigationMouseListener extends MouseAdapter {
         private int placeId;
@@ -69,12 +108,18 @@ public class NavigationViewPanel extends AbstractViewPanel {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             controller.changeCurrentPlace(placeId);
-            System.out.println("Clicked");
         }
-    }
 
-    public void modelPropertyChange(PropertyChangeEvent evt) {
-        revalidate();
-        repaint();
+        @Override
+        public void mouseEntered(MouseEvent mouseEvent) {
+            JLabel label = (JLabel) mouseEvent.getSource();
+            label.setBackground(new Color(219, 219, 219));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent mouseEvent) {
+            JLabel label = (JLabel) mouseEvent.getSource();
+            label.setBackground(new Color(232, 232, 232));
+        }
     }
 }

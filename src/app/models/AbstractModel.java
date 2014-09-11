@@ -23,7 +23,6 @@ public abstract class AbstractModel {
     }
 
     public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        System.out.println("firePropertyChange");
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 }

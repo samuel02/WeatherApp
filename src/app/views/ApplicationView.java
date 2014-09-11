@@ -16,6 +16,7 @@ public class ApplicationView extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+        setResizable(false);
     }
 
 }

@@ -12,7 +12,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by samuelnilsson on 2014-09-10.
@@ -20,14 +22,15 @@ import java.util.List;
 public class Place extends AbstractModel {
     private static int instanceCounter = -1;
 
+    private int id;
     private String name;
     private String altitude;
     private String latitude;
     private String longitude;
-    private WeatherForecast forecast;
     private Boolean active;
-    private int id;
 
+
+    public WeatherForecast forecast;
 
     public Place(AbstractController controller) {
         controller.addModel(this);
@@ -88,10 +91,6 @@ public class Place extends AbstractModel {
 
     public int getId() {
         return this.id;
-    }
-
-    public String getCurrentTemperature() {
-        return this.forecast.getCurrentTemperature() + "\u00b0C";
     }
 
     public void setForecast() {
