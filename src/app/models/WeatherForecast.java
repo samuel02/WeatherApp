@@ -23,11 +23,11 @@ public class WeatherForecast {
 
     public WeatherForecast(String latitude, String longitude, String altitude) {
 
-        //YrClient client = new YrClient();
-        //Document xml = client.getLocationForecast(latitude, longitude, altitude);
-        //parseTemperaturesFromXml(xml);
+        YrClient client = new YrClient();
+        Document xml = client.getLocationForecast(latitude, longitude, altitude);
+        parseTemperaturesFromXml(xml);
 
-        try {
+        /*try {
             File xmlFile = new File("dummy.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -35,7 +35,7 @@ public class WeatherForecast {
             parseTemperaturesFromXml(xml);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

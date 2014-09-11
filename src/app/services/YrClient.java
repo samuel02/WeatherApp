@@ -21,19 +21,16 @@ public class YrClient {
     }
 
     public Document getLocationForecast(String latitude, String longitude, String altitude) {
-        DocumentBuilderFactory dbFactory;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
         Document doc;
         String data = "";
 
         try {
-            dbFactory = DocumentBuilderFactory.newInstance();
             dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Something has gone terribly wrong.");
         }
-
-        doc = dBuilder.newDocument();
 
         try {
             data = HttpClient.get(buildURL(latitude, longitude, altitude));
@@ -52,7 +49,6 @@ public class YrClient {
         query.append("lon", longitude);
         query.append("msl", altitude);
 
-        String url = YR_API_URL + "locationForecast/" + YR_API_VERSION + "/?" + query;
-        return url;
+        return YR_API_URL + "locationForecast/" + YR_API_VERSION + "/?" + query;
     }
 }

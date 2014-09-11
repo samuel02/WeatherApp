@@ -8,7 +8,6 @@ import java.awt.*;
  */
 public class ApplicationView extends JFrame {
 
-
     public ApplicationView(DisplayViewPanel displayViewPanel, NavigationViewPanel navigationPanel) {
         setTitle("WeatherApp");
         getContentPane().add(displayViewPanel, BorderLayout.CENTER);

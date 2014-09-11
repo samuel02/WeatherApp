@@ -32,51 +32,20 @@ public class Place extends AbstractModel {
 
     public WeatherForecast forecast;
 
-    public Place(AbstractController controller) {
+    public Place(AbstractController controller, String name, String altitude, String latitude, String longitude) {
         controller.addModel(this);
         instanceCounter++;
         this.id = instanceCounter;
-    }
-
-
-    public void setName(String name) {
-        String oldName = this.name;
         this.name = name;
-        firePropertyChange("name", oldName, name);
+        this.altitude = altitude;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.forecast = new WeatherForecast(latitude, longitude, altitude);
+        this.active = false;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setAltitude(String altitude) {
-        String oldAltitude = this.altitude;
-        this.altitude = altitude;
-        firePropertyChange("altitude", oldAltitude, altitude);
-    }
-
-    public String getAltitude() {
-        return altitude;
-    }
-
-    public void setLongitude(String longitude) {
-        String oldLongitude = this.longitude;
-        this.longitude = longitude;
-        firePropertyChange("longitude", oldLongitude, longitude);
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLatitude(String latitude) {
-        String oldLatitude = this.latitude;
-        this.latitude = latitude;
-        firePropertyChange("latitude", oldLatitude, latitude);
-    }
-
-    public String getLatitude() {
-        return latitude;
     }
 
     public void setActive(Boolean active) {
@@ -91,10 +60,6 @@ public class Place extends AbstractModel {
 
     public int getId() {
         return this.id;
-    }
-
-    public void setForecast() {
-        this.forecast = new WeatherForecast(latitude, longitude, altitude);
     }
 
     public static List<Place> createFromXml(AbstractController controller, String xmlPath) {
@@ -121,14 +86,7 @@ public class Place extends AbstractModel {
                     String latitude = locationElement.getAttribute("latitude");
                     String longitude = locationElement.getAttribute("longitude");
 
-                    Place newPlace = new Place(controller);
-                    newPlace.setName(name);
-                    newPlace.setAltitude(altitude);
-                    newPlace.setLatitude(latitude);
-                    newPlace.setLongitude(longitude);
-                    newPlace.setActive(false);
-                    newPlace.setForecast();
-
+                    Place newPlace = new Place(controller, name, altitude, latitude, longitude);
                     places.add(newPlace);
                 }
             }
