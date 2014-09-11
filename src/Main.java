@@ -1,6 +1,7 @@
-import app.Place;
-
-import java.util.List;
+import app.controllers.ApplicationController;
+import app.views.ApplicationView;
+import app.views.DisplayViewPanel;
+import app.views.NavigationViewPanel;
 
 
 /**
@@ -9,17 +10,11 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String placesXmlPath = args[0];
-        List<Place> places = Place.createFromXml(placesXmlPath);
 
-        for(Place p : places) {
-            System.out.println("Name: " + p.getName());
-            for(String s : p.getLocation()) {
-                System.out.println(s);
-            }
-        }
-
-
+        ApplicationController controller = new ApplicationController();
+        NavigationViewPanel navigationPanel = new NavigationViewPanel(controller);
+        DisplayViewPanel panel = new DisplayViewPanel(controller);
+        ApplicationView view = new ApplicationView(panel, navigationPanel);
     }
 
 }
