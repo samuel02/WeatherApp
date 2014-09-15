@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <places>
+    <locality name="Luleå">
+        <location altitude="17" latitude="65.5842" longitude="22.1547"/>
+    </locality>
     <locality name="Skellefteå">
         <location altitude="55" latitude="64.4444" longitude="20.9644"/>
     </locality>
