@@ -26,19 +26,28 @@ public class DisplayViewPanel extends AbstractViewPanel {
         this.controller.addView(this);
         this.activePlace = this.controller.getCurrentPlace();
 
-        this.setMinimumSize(new Dimension(500, 400));
-        this.setPreferredSize(new Dimension(500, 400));
+        Box box = setupPane();
+
+        addTemperatureLabel(box);
+        addTimeSeriesPane(box);
+
+        this.add(box);
+    }
+
+    public Box setupPane() {
+        Dimension d = new Dimension(500, 400);
+
+        this.setMinimumSize(d);
+        this.setPreferredSize(d);
         this.setBackground(Color.WHITE);
 
         Box box = Box.createVerticalBox();
-        box.setMaximumSize(new Dimension(500, 400));
+        box.setMaximumSize(d);
 
-        this.temperatureLabel = new JLabel(controller.getTemperature() + "\u00b0C");
-        temperatureLabel.setBorder(BorderFactory.createEmptyBorder(120, 0, 130, 0));
-        temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
-        temperatureLabel.setForeground(new Color(50, 150, 213));
-        temperatureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return box;
+    }
 
+    private void addTimeSeriesPane(Box box) {
         Object[] timeSeries = activePlace.forecast.getTimeSeries();
 
         JPanel timeSeriesPanel = new JPanel();
@@ -101,10 +110,17 @@ public class DisplayViewPanel extends AbstractViewPanel {
         timeScrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0,0));
         timeScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        box.add(temperatureLabel);
         box.add(timeScrollPane);
+    }
 
-        this.add(box);
+    private void addTemperatureLabel(Box box) {
+        this.temperatureLabel = new JLabel(controller.getTemperature() + "\u00b0C");
+        temperatureLabel.setBorder(BorderFactory.createEmptyBorder(120, 0, 130, 0));
+        temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
+        temperatureLabel.setForeground(new Color(50, 150, 213));
+        temperatureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        box.add(temperatureLabel);
     }
 
     class TimeSelectMouseListener extends MouseAdapter {

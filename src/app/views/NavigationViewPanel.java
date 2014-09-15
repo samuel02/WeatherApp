@@ -22,10 +22,13 @@ public class NavigationViewPanel extends AbstractViewPanel {
     public NavigationViewPanel(final ApplicationController controller) {
         this.controller = controller;
         this.controller.addView(this);
-        setupPane();
+
+        JPanel pane = setupPane();
+
+        addPlacesToNavigation(pane);
     }
 
-    public void setupPane() {
+    public JPanel setupPane() {
         FlowLayout layout = new FlowLayout();
         layout.setHgap(0);
         layout.setVgap(0);
@@ -37,16 +40,10 @@ public class NavigationViewPanel extends AbstractViewPanel {
         this.setBackground(new Color(244, 244, 244));
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(204, 204, 204)));
 
-        addPlacesToNavigation();
+        return this;
     }
 
-    private void addLogo() throws IOException {
-        BufferedImage logo = ImageIO.read(new File("logo.png"));
-        JLabel logoLabel = new JLabel(new ImageIcon(logo));
-        this.add(logoLabel);
-    }
-
-    private void addPlacesToNavigation() {
+    private void addPlacesToNavigation(JPanel pane) {
         navigationElements = Box.createVerticalBox();
         navigationElements.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 204, 204)));
 
@@ -89,7 +86,7 @@ public class NavigationViewPanel extends AbstractViewPanel {
             navigationElements.add(label);
         }
 
-        this.add(navigationElements);
+        pane.add(navigationElements);
     }
 
     public void modelPropertyChange(PropertyChangeEvent evt) {
