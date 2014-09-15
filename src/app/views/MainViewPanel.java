@@ -16,12 +16,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-public class DisplayViewPanel extends AbstractViewPanel {
+/**
+ * The main view which shows temperature for selected place
+ * and time. It also contains the list of times for the user
+ * to select a different time.
+ *
+ * @author Samuel Nilsson
+ */
+public class MainViewPanel extends AbstractViewPanel {
+
     JLabel temperatureLabel;
     ApplicationController controller;
     Place activePlace;
 
-    public DisplayViewPanel(ApplicationController controller) {
+    public MainViewPanel(ApplicationController controller) {
         this.controller = controller;
         this.controller.addView(this);
         this.activePlace = this.controller.getCurrentPlace();
@@ -34,6 +42,13 @@ public class DisplayViewPanel extends AbstractViewPanel {
         this.add(box);
     }
 
+
+    /**
+     * Sets up the pane and sets the layout to
+     * a vertical BoxLayout.
+     *
+     * @return box to add content to
+     */
     public Box setupPane() {
         Dimension d = new Dimension(500, 400);
 
@@ -47,6 +62,14 @@ public class DisplayViewPanel extends AbstractViewPanel {
         return box;
     }
 
+
+    /**
+     * Adds a pane containing all times displayed on a horizontal line
+     * and scrollable. Hovering over a time will change the selected time
+     * to the time currently hovered.
+     *
+     * @param box
+     */
     private void addTimeSeriesPane(Box box) {
         Object[] timeSeries = activePlace.forecast.getTimeSeries();
 
@@ -113,6 +136,12 @@ public class DisplayViewPanel extends AbstractViewPanel {
         box.add(timeScrollPane);
     }
 
+
+    /**
+     * Add the temperature label.
+     *
+     * @param box
+     */
     private void addTemperatureLabel(Box box) {
         this.temperatureLabel = new JLabel(controller.getTemperature() + "\u00b0C");
         temperatureLabel.setBorder(BorderFactory.createEmptyBorder(120, 0, 130, 0));
@@ -123,6 +152,12 @@ public class DisplayViewPanel extends AbstractViewPanel {
         box.add(temperatureLabel);
     }
 
+
+    /**
+     * Specific MouseAdapter for the selecting of time,
+     * takes care of the visual hover effect as well as actually
+     * calling the changeSelectedTime function on the controller.
+     */
     class TimeSelectMouseListener extends MouseAdapter {
         private Date time;
         private ApplicationController controller;
@@ -147,6 +182,15 @@ public class DisplayViewPanel extends AbstractViewPanel {
 
     }
 
+
+    /**
+     * Function to handle property changes in models. This function only cares
+     * about events that change the active status of a place or changes the current
+     * time. If one of those events occurs it will update the temperature label with
+     * correct temperature from the controller.
+     *
+     * @param evt
+     */
     public void modelPropertyChange(PropertyChangeEvent evt) {
 
         if(evt.getPropertyName().equals("active") || evt.getPropertyName().equals("currentTime")) {

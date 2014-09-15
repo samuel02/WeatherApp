@@ -6,50 +6,61 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by samuelnilsson on 2014-09-10.
+ * Model for weather forecasts. The forecast is fetched in
+ * the constructor from yr.no and parsed from retrieved XML
+ * into a HashMap, mapping dates (timestamps) to strings containing
+ * the temperature.
+ *
+ * @author Samuel Nilsson
  */
 public class WeatherForecast {
 
     private HashMap<Date, String> forecast = new HashMap<Date, String>();
 
     public WeatherForecast(String latitude, String longitude, String altitude) {
-
         YrClient client = new YrClient();
         Document xml = client.getLocationForecast(latitude, longitude, altitude);
         parseTemperaturesFromXml(xml);
-
-        /*try {
-            File xmlFile = new File("dummy.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document xml = dBuilder.parse(xmlFile);
-            parseTemperaturesFromXml(xml);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
     }
 
+
+    /**
+     * Get temperature for given date/time.
+     *
+     * @param timestamp to get temperature for
+     * @return string containing temperature
+     */
     public String getTemperature(Date timestamp) {
         return forecast.get(timestamp);
     }
 
+
+    /**
+     * Get list of timestamps currently in the set,
+     * sorted in correct order.
+     *
+     * @return List of dates
+     */
     public Object[] getTimeSeries() {
         Object[] series = forecast.keySet().toArray();
         Arrays.sort(series);
         return series;
     }
 
+
+    /**
+     * Function to parse temperatures from an XML document
+     * and add entries to the forecast HashMap. Will only add
+     * forecasts for the next 24 h.
+     *
+     * @param xml containing weather data from yr.no
+     */
     private void parseTemperaturesFromXml(Document xml) {
         Date startDate = null;
 
@@ -90,5 +101,4 @@ public class WeatherForecast {
             }
         }
     }
-
 }

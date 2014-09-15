@@ -4,9 +4,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- * Created by samuelnilsson on 2014-09-10.
+ * Simple class for building string of params used
+ * for the query part when building URLs. E.g:
+ *
+ * example.org?foo=bar&baz=foobar
+ *
+ * @author Samuel Nilsson
  */
 public class QueryString {
+
     private StringBuilder query = new StringBuilder();
 
     public QueryString() {

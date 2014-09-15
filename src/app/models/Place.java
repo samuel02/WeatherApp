@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Created by samuelnilsson on 2014-09-10.
+ * The Place model is the main entity in WeatherApp it represents
+ * a geographic location with a name and coordinates and has a
+ * forecast.
+ *
+ * @author Samuel Nilsson
  */
 public class Place extends AbstractModel {
-    private static int instanceCounter = -1;
 
-    private int id;
     private String name;
     private String altitude;
     private String latitude;
@@ -34,8 +36,6 @@ public class Place extends AbstractModel {
 
     public Place(AbstractController controller, String name, String altitude, String latitude, String longitude) {
         controller.addModel(this);
-        instanceCounter++;
-        this.id = instanceCounter;
         this.name = name;
         this.altitude = altitude;
         this.latitude = latitude;
@@ -44,24 +44,45 @@ public class Place extends AbstractModel {
         this.active = false;
     }
 
+
+    /**
+     * Getter for name.
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+
+    /**
+     * Setter for active status, will trigger a property change event.
+     *
+     * @param active
+     */
     public void setActive(Boolean active) {
         Boolean oldValue = this.active;
         this.active = active;
         firePropertyChange("active", oldValue, active);
     }
 
+
+    /**
+     * Getter for active status,
+     * @return
+     */
     public Boolean getActive() {
         return this.active;
     }
 
-    public int getId() {
-        return this.id;
-    }
 
+    /**
+     * Class method to batch create Places from an xml file.
+     *
+     * @param controller Controller that the created models should be bound to.
+     * @param xmlPath Path to xml file containing the places
+     * @return List of places.
+     */
     public static List<Place> createFromXml(AbstractController controller, String xmlPath) {
         List<Place> places = new ArrayList<Place>();
 

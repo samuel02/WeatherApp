@@ -7,10 +7,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by samuelnilsson on 2014-09-10.
+ * Simple class for making HTTP requests to given URLs. Currently
+ * it only supports get requests.
+ *
+ * @author Samuel Nilsson
+ *
  */
-public class HttpClient {
+public class SimpleHttpClient {
 
+    /**
+     * Public method to make HTTP GET requests to given URL. Will return the full
+     * response as a string.
+     *
+     * @param urlString Full URL to make the request to
+     * @return String containing the full response.
+     * @throws IOException
+     */
     public static String get(String urlString) throws IOException{
 
         URL url = new URL(urlString);

@@ -15,11 +15,18 @@ import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class NavigationViewPanel extends AbstractViewPanel {
+/**
+ * This is the sidebar view panel containing the navigation,
+ * i.e. choosing between the different places.
+ *
+ * @author Samuel Nilsson
+ */
+public class SidebarViewPanel extends AbstractViewPanel {
+
     ApplicationController controller;
     Box navigationElements;
 
-    public NavigationViewPanel(final ApplicationController controller) {
+    public SidebarViewPanel(final ApplicationController controller) {
         this.controller = controller;
         this.controller.addView(this);
 
@@ -28,6 +35,12 @@ public class NavigationViewPanel extends AbstractViewPanel {
         addPlacesToNavigation(pane);
     }
 
+    /**
+     * Sets up the pane with correct colors, dimensions
+     * and layout.
+     *
+     * @return
+     */
     public JPanel setupPane() {
         FlowLayout layout = new FlowLayout();
         layout.setHgap(0);
@@ -43,6 +56,11 @@ public class NavigationViewPanel extends AbstractViewPanel {
         return this;
     }
 
+    /**
+     * Adds list of places for the navigation.
+     *
+     * @param pane
+     */
     private void addPlacesToNavigation(JPanel pane) {
         navigationElements = Box.createVerticalBox();
         navigationElements.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 204, 204)));
@@ -89,6 +107,15 @@ public class NavigationViewPanel extends AbstractViewPanel {
         pane.add(navigationElements);
     }
 
+
+    /**
+     * Handles property change events. This function is only concerned
+     * about the cases when a model has changed its active status. In those
+     * cases it will set the active style to the correct element in the list
+     * and reset the style for all other elements.
+     *
+     * @param evt
+     */
     public void modelPropertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("active")) {
             Boolean activated = (Boolean) evt.getNewValue();
@@ -114,6 +141,10 @@ public class NavigationViewPanel extends AbstractViewPanel {
     }
 
 
+    /**
+     * MouseAdapter for handling clicks and hover effects for
+     * navigation elements.
+     */
     class NavigationMouseListener extends MouseAdapter {
         private int placeId;
         private ApplicationController controller;
@@ -123,11 +154,25 @@ public class NavigationViewPanel extends AbstractViewPanel {
             this.placeId = placeId;
         }
 
+
+        /**
+         * Changes current place to the id stored in
+         * the private variable placeId.
+         *
+         * @param mouseEvent
+         */
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             controller.changeCurrentPlace(placeId);
         }
 
+
+        /**
+         * Add hover style when hovering over
+         * navigation elements.
+         *
+         * @param mouseEvent
+         */
         @Override
         public void mouseEntered(MouseEvent mouseEvent) {
             JLabel label = (JLabel) mouseEvent.getSource();
@@ -136,6 +181,13 @@ public class NavigationViewPanel extends AbstractViewPanel {
             }
         }
 
+
+        /**
+         * Remove hover style when leaving a navigation
+         * element
+         *
+         * @param mouseEvent
+         */
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
             JLabel label = (JLabel) mouseEvent.getSource();
