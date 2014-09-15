@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Main controller for WeatherApp.
+ * Main controller for WeatherApp. Will at instantiation load
+ * and create all place models from the xml file "places.xml".
  *
  * @author Samuel Nilsson
  */
