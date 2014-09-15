@@ -17,12 +17,9 @@ public class YrClient {
     private static String YR_API_VERSION = "1.9";
     private static String YR_API_URL = "http://api.yr.no/weatherapi/";
 
-    public YrClient() {
-    }
-
     public Document getLocationForecast(String latitude, String longitude, String altitude) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = null;
+        DocumentBuilder dBuilder;
         Document doc;
         String data = "";
 
