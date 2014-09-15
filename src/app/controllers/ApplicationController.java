@@ -23,7 +23,15 @@ public class ApplicationController extends AbstractController{
         this.places = Place.createFromXml(this, "places.xml");
         this.currentPlace = places.get(0);
         this.currentPlace.setActive(true);
-        this.currentTime = (Date) this.currentPlace.forecast.getTimeSeries()[0];
+
+        Object[] timeSeries = this.currentPlace.forecast.getTimeSeries();
+
+        if(timeSeries.length > 0) {
+            this.currentTime = (Date) timeSeries[0];
+        } else {
+            this.currentTime = null;
+        }
+
     }
 
 

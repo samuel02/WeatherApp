@@ -56,19 +56,21 @@ public class Place extends AbstractModel {
 
 
     /**
-     * Setter for active status, will trigger a property change event.
+     * Setter for active status, will trigger a property change event
+     * and update the forecast for the selected place.
      *
      * @param active
      */
     public void setActive(Boolean active) {
         Boolean oldValue = this.active;
         this.active = active;
+        forecast.updateForecastFromYr();
         firePropertyChange("active", oldValue, active);
     }
 
 
     /**
-     * Getter for active status,
+     * Getter for active status.
      * @return
      */
     public Boolean getActive() {

@@ -21,12 +21,17 @@ import java.util.*;
  */
 public class WeatherForecast {
 
+    private YrClient client = new YrClient();
+    private String latitude;
+    private String longitude;
+    private String altitude;
+
     private HashMap<Date, String> forecast = new HashMap<Date, String>();
 
     public WeatherForecast(String latitude, String longitude, String altitude) {
-        YrClient client = new YrClient();
-        Document xml = client.getLocationForecast(latitude, longitude, altitude);
-        parseTemperaturesFromXml(xml);
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
     }
 
 
@@ -55,14 +60,38 @@ public class WeatherForecast {
 
 
     /**
-     * Function to parse temperatures from an XML document
-     * and add entries to the forecast HashMap. Will only add
-     * forecasts for the next 24 h.
+     * Update the forecast with data from YR.no.
+     *
+     * @param forceUpdate Force a new fetch of data regardless of cache settings
+     */
+    public void updateForecastFromYr(Boolean forceUpdate) {
+        if(!forceUpdate && !forecast.isEmpty()) {
+            return;
+        }
+
+        Document xml = this.client.getLocationForecast(this.latitude, longitude, altitude);
+        this.forecast = parseTemperaturesFromXml(xml);
+    }
+
+
+    /**
+     * Update the forecast with data from YR.no.
+     */
+    public void updateForecastFromYr() {
+        updateForecastFromYr(false);
+    }
+
+
+    /**
+     * Function to parse temperatures from an XML document. Will load
+     * predicted temperatures for the next 24 hours and return the data
+     * as a HashMap, mapping dates to temperatures.
      *
      * @param xml containing weather data from yr.no
      */
-    private void parseTemperaturesFromXml(Document xml) {
+    private HashMap<Date, String> parseTemperaturesFromXml(Document xml) {
         Date startDate = null;
+        HashMap<Date, String> newForecast = new HashMap<Date, String>();
 
         Element documentElement = xml.getDocumentElement();
         Element productElement = (Element) documentElement.getElementsByTagName("product").item(0);
@@ -95,10 +124,12 @@ public class WeatherForecast {
                     temperature = temperatureElement.getAttribute("value");
 
                     if((time.getTime()-startDate.getTime())/(60 * 60 * 1000) <= 24) {
-                        this.forecast.put(time, temperature);
+                        newForecast.put(time, temperature);
                     }
                 }
             }
         }
+
+        return newForecast;
     }
 }

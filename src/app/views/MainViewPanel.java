@@ -143,9 +143,16 @@ public class MainViewPanel extends AbstractViewPanel {
      * @param box
      */
     private void addTemperatureLabel(Box box) {
-        this.temperatureLabel = new JLabel(controller.getTemperature() + "\u00b0C");
+
+        if(controller.getTemperature() != null) {
+            this.temperatureLabel = new JLabel(controller.getTemperature() + "\u00b0C");
+            temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
+        } else {
+            this.temperatureLabel = new JLabel("No data available for " + activePlace.getName() + ".");
+            temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+        }
+
         temperatureLabel.setBorder(BorderFactory.createEmptyBorder(120, 0, 130, 0));
-        temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
         temperatureLabel.setForeground(new Color(50, 150, 213));
         temperatureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -194,7 +201,15 @@ public class MainViewPanel extends AbstractViewPanel {
     public void modelPropertyChange(PropertyChangeEvent evt) {
 
         if(evt.getPropertyName().equals("active") || evt.getPropertyName().equals("currentTime")) {
-            temperatureLabel.setText(controller.getTemperature() + "\u00b0C");
+            this.activePlace = this.controller.getCurrentPlace();
+
+            if(controller.getTemperature() != null) {
+                temperatureLabel.setText(controller.getTemperature() + "\u00b0C");
+                temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
+            } else {
+                temperatureLabel.setText("No data available for " + activePlace.getName() + ".");
+                temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+            }
         }
 
         revalidate();
