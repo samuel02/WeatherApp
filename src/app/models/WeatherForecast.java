@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Model for weather forecasts. The forecast is fetched in
@@ -25,13 +26,15 @@ public class WeatherForecast {
     private String latitude;
     private String longitude;
     private String altitude;
-
+    private Date latestFetchTime;
+    private int cacheExpirationTime;
     private HashMap<Date, String> forecast = new HashMap<Date, String>();
 
     public WeatherForecast(String latitude, String longitude, String altitude) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
+        this.cacheExpirationTime = 1;
     }
 
 
@@ -65,12 +68,13 @@ public class WeatherForecast {
      * @param forceUpdate Force a new fetch of data regardless of cache settings
      */
     public void updateForecastFromYr(Boolean forceUpdate) {
-        if(!forceUpdate && !forecast.isEmpty()) {
+        if(!forceUpdate && !cacheIsExpired()) {
             return;
         }
 
         Document xml = this.client.getLocationForecast(this.latitude, longitude, altitude);
         this.forecast = parseTemperaturesFromXml(xml);
+        this.latestFetchTime = new Date();
     }
 
 
@@ -79,6 +83,23 @@ public class WeatherForecast {
      */
     public void updateForecastFromYr() {
         updateForecastFromYr(false);
+    }
+
+
+    /**
+     * Check whether cache is expired by comparing the current time
+     * and the store time in latestFetchTime
+     *
+     * @return true if cache is expired
+     */
+    private Boolean cacheIsExpired() {
+        if(latestFetchTime == null) {
+            return true;
+        }
+
+        long diff = ((new Date()).getTime() - latestFetchTime.getTime());
+        long differenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+        return differenceInMinutes >= cacheExpirationTime;
     }
 
 
