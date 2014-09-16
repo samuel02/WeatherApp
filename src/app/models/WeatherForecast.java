@@ -81,24 +81,15 @@ public class WeatherForecast {
     /**
      * Update the forecast with data from YR.no.
      *
-     * @param forceUpdate Force a new fetch of data regardless of cache settings
      */
-    public void updateForecastFromYr(Boolean forceUpdate) {
-        if(!forceUpdate && !cacheIsExpired()) {
+    public void updateForecastFromYr() {
+        if(!cacheIsExpired()) {
             return;
         }
 
         Document xml = this.client.getLocationForecast(this.latitude, longitude, altitude);
         this.forecast = parseTemperaturesFromXml(xml);
         this.latestFetchTime = new Date();
-    }
-
-
-    /**
-     * Update the forecast with data from YR.no.
-     */
-    public void updateForecastFromYr() {
-        updateForecastFromYr(false);
     }
 
 
