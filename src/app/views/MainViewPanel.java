@@ -195,8 +195,7 @@ public class MainViewPanel extends AbstractViewPanel {
      * @param evt
      */
     public void modelPropertyChange(PropertyChangeEvent evt) {
-
-        if(evt.getPropertyName().equals("active") || evt.getPropertyName().equals("currentTime")) {
+        if(evt.getPropertyName().equals("active") || evt.getPropertyName().equals("selectedTime")) {
             this.activePlace = this.controller.getSelectedPlace();
 
             if(controller.getTemperature() != null) {
