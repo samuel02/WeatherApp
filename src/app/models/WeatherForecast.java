@@ -149,6 +149,7 @@ public class WeatherForecast {
 
                     try {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                        //dateFormat.setTimeZone(TimeZone.getTimeZone("CEST"));
                         time = dateFormat.parse(element.getAttribute("from"));
                     } catch(ParseException e) {
                         throw new RuntimeException("Unable to parse date from XML.");

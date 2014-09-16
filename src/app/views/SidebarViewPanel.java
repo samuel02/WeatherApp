@@ -180,10 +180,6 @@ public class SidebarViewPanel extends AbstractViewPanel {
             }
         }
 
-        if(evt.getPropertyName().equals("cacheExpirationTime")) {
-            System.out.println("Changed cache expiration time to: " + evt.getNewValue());
-        }
-
         revalidate();
         repaint();
     }

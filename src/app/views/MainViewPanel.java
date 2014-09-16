@@ -200,7 +200,7 @@ public class MainViewPanel extends AbstractViewPanel {
             this.activePlace = this.controller.getSelectedPlace();
 
             if(controller.getTemperature() != null) {
-                temperatureLabel.setText(controller.getTemperature() + "\u00b0C");
+                temperatureLabel.setText(this.controller.getTemperature() + "\u00b0C");
                 temperatureLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 92));
             } else {
                 temperatureLabel.setText("No data available for " + activePlace.getName() + ".");

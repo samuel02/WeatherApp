@@ -93,7 +93,7 @@ public class ApplicationController extends AbstractController{
     }
 
     /**
-     * Function to set cache expiration time for a place
+     * Function to set cache expiration time
      *
      * @param minutes new value for cache expiration time
      */
@@ -101,10 +101,6 @@ public class ApplicationController extends AbstractController{
         int oldValue = WeatherForecast.getCacheExpirationTime();
         WeatherForecast.setCacheExpirationTime(minutes);
         propertyChange(new PropertyChangeEvent(this, "cacheExpirationTime", oldValue, minutes));
-    }
-
-    public int getSelectedCacheExpirationTime() {
-        return WeatherForecast.getCacheExpirationTime();
     }
 
 
