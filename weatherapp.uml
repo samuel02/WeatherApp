@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="124.0">app.views.MainViewPanel</node>
+    <node x="364.0" y="124.0">app.views.SidebarViewPanel</node>
+    <node x="0.0" y="591.0">app.controllers.AbstractController</node>
+    <node x="803.0" y="215.0">app.models.Place</node>
+    <node x="805.5" y="0.0">app.models.AbstractModel</node>
+    <node x="75.5" y="404.0">app.views.MainViewPanel.TimeSelectMouseListener</node>
+    <node x="0.0" y="1058.0">app.services.YrClient</node>
+    <node x="174.5" y="0.0">app.views.AbstractViewPanel</node>
+    <node x="724.0" y="1058.0">Main</node>
+    <node x="938.0" y="1058.0">app.utils.SimpleHttpClient</node>
+    <node x="429.0" y="591.0">app.models.WeatherForecast</node>
+    <node x="960.0" y="591.0">app.utils.QueryString</node>
+    <node x="21.5" y="805.0">app.controllers.ApplicationController</node>
+    <node x="451.0" y="382.0">app.views.SidebarViewPanel.NavigationMouseListener</node>
+    <node x="304.0" y="1058.0">app.views.ApplicationView</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="app.views.MainViewPanel.TimeSelectMouseListener" target="app.views.MainViewPanel">
+      <point x="0.0" y="-60.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="app.controllers.ApplicationController" target="app.controllers.AbstractController">
+      <point x="0.0" y="-104.0" />
+      <point x="0.0" y="82.0" />
+    </edge>
+    <edge source="app.views.SidebarViewPanel.NavigationMouseListener" target="app.views.SidebarViewPanel">
+      <point x="0.0" y="-82.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="app.views.MainViewPanel" target="app.views.AbstractViewPanel">
+      <point x="0.0" y="-104.0" />
+      <point x="172.0" y="99.0" />
+      <point x="270.5" y="99.0" />
+      <point x="-96.0" y="37.0" />
+    </edge>
+    <edge source="app.models.Place" target="app.models.AbstractModel">
+      <point x="0.0" y="-104.5" />
+      <point x="0.0" y="82.5" />
+    </edge>
+    <edge source="app.views.SidebarViewPanel" target="app.views.AbstractViewPanel">
+      <point x="0.0" y="-104.0" />
+      <point x="561.0" y="99.0" />
+      <point x="462.5" y="99.0" />
+      <point x="96.0" y="37.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.49624060150375937" x="606.6742424242425" y="588.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
