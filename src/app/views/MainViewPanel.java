@@ -5,16 +5,12 @@ import app.controllers.ApplicationController;
 import app.models.Place;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
 
 /**
  * The main view which shows temperature for selected place
@@ -32,7 +28,7 @@ public class MainViewPanel extends AbstractViewPanel {
     public MainViewPanel(ApplicationController controller) {
         this.controller = controller;
         this.controller.addView(this);
-        this.activePlace = this.controller.getCurrentPlace();
+        this.activePlace = this.controller.getSelectedPlace();
 
         Box box = setupPane();
 
@@ -97,7 +93,7 @@ public class MainViewPanel extends AbstractViewPanel {
             timeLabel.setMinimumSize(new Dimension(45, 20));
             timeLabel.setMaximumSize(new Dimension(45, 20));
 
-            if(time == controller.getCurrentTime()) {
+            if(time == controller.getSelectedTime()) {
                 timeLabel.setForeground(new Color(50, 150, 213));
             }
 
@@ -201,7 +197,7 @@ public class MainViewPanel extends AbstractViewPanel {
     public void modelPropertyChange(PropertyChangeEvent evt) {
 
         if(evt.getPropertyName().equals("active") || evt.getPropertyName().equals("currentTime")) {
-            this.activePlace = this.controller.getCurrentPlace();
+            this.activePlace = this.controller.getSelectedPlace();
 
             if(controller.getTemperature() != null) {
                 temperatureLabel.setText(controller.getTemperature() + "\u00b0C");

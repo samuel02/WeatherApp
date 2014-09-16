@@ -21,20 +21,19 @@ import java.util.concurrent.TimeUnit;
  * @author Samuel Nilsson
  */
 public class WeatherForecast {
+    private static int cacheExpirationTime = 1;
 
     private YrClient client = new YrClient();
     private String latitude;
     private String longitude;
     private String altitude;
     private Date latestFetchTime;
-    private int cacheExpirationTime;
-    private HashMap<Date, String> forecast = new HashMap<Date, String>();
 
+    private HashMap<Date, String> forecast = new HashMap<Date, String>();
     public WeatherForecast(String latitude, String longitude, String altitude) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
-        this.cacheExpirationTime = 1;
     }
 
 
@@ -61,6 +60,23 @@ public class WeatherForecast {
         return series;
     }
 
+
+    /**
+     * Set expire time for forecast cache
+     *
+     * @param minutes integer representing the number of minutes before the cache expires
+     */
+    public static void setCacheExpirationTime(int minutes) {
+        cacheExpirationTime = minutes;
+    }
+
+
+    /**
+     * Get expire time for forecast cache
+     */
+    public static int getCacheExpirationTime() {
+        return cacheExpirationTime;
+    }
 
     /**
      * Update the forecast with data from YR.no.

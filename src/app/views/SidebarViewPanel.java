@@ -4,16 +4,14 @@ package app.views;
 import app.controllers.ApplicationController;
 import app.models.Place;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * This is the sidebar view panel containing the navigation,
@@ -33,6 +31,7 @@ public class SidebarViewPanel extends AbstractViewPanel {
         JPanel pane = setupPane();
 
         addPlacesToNavigation(pane);
+        addCacheControl(pane);
     }
 
     /**
@@ -66,10 +65,7 @@ public class SidebarViewPanel extends AbstractViewPanel {
         navigationElements.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 204, 204)));
 
 
-        JLabel placesTitle = new JLabel("PLACES");
-        placesTitle.setFont(new Font("Helvetica Neue", Font.BOLD, 10));
-        placesTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-        placesTitle.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 0));
+        JLabel placesTitle = createTitleLabel("PLACES");
         navigationElements.add(placesTitle);
 
         Dimension labelDimension = new Dimension(200, 30);
@@ -109,6 +105,54 @@ public class SidebarViewPanel extends AbstractViewPanel {
 
 
     /**
+     *
+     */
+    private void addCacheControl(JPanel pane) {
+        JLabel cacheControlLabel = createTitleLabel("CACHE EXPIRY TIME");
+        cacheControlLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cacheControlLabel.setBorder(BorderFactory.createEmptyBorder(30, 5, 5, 0));
+        cacheControlLabel.setPreferredSize(new Dimension(200, 50));
+        pane.add(cacheControlLabel);
+
+        String[] expiryTimes = { "1 minutes", "2 minutes", "3 minutes", "5 minutes", "8 minutes", "13 minutes", "21 minutes", "34 minutes", "55 minutes" };
+
+        JComboBox timeSelectBox = new JComboBox(expiryTimes);
+        timeSelectBox.setPreferredSize(new Dimension(200, 25));
+        timeSelectBox.setSelectedIndex(0);
+
+        timeSelectBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                JComboBox comboBox = (JComboBox) event.getSource();
+
+                String selected = (String) comboBox.getSelectedItem();
+                int selectedNumber = Integer.parseInt(selected.replaceAll("[\\D]", ""));
+                controller.changeCacheExpirationTime(selectedNumber);
+            }
+        });
+
+        pane.add(timeSelectBox);
+
+        JLabel infoText = new JLabel("<html>Select how many minutes old you allow the data to get before new data is fetched from yr.no.</html>");
+        infoText.setFont(new Font("Helvetica Neue", Font.PLAIN, 11));
+        infoText.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 0));
+        infoText.setAlignmentX(Component.LEFT_ALIGNMENT);
+        infoText.setPreferredSize(new Dimension(200, 50));
+
+        pane.add(infoText);
+    }
+
+
+    private JLabel createTitleLabel(String label) {
+        JLabel jLabel = new JLabel(label);
+        jLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 10));
+        jLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        jLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 0));
+        return jLabel;
+    }
+
+
+
+    /**
      * Handles property change events. This function is only concerned
      * about the cases when a model has changed its active status. In those
      * cases it will set the active style to the correct element in the list
@@ -134,6 +178,10 @@ public class SidebarViewPanel extends AbstractViewPanel {
                 }
 
             }
+        }
+
+        if(evt.getPropertyName().equals("cacheExpirationTime")) {
+            System.out.println("Changed cache expiration time to: " + evt.getNewValue());
         }
 
         revalidate();
@@ -163,7 +211,7 @@ public class SidebarViewPanel extends AbstractViewPanel {
          */
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-            controller.changeCurrentPlace(placeId);
+            controller.changeSelectedPlace(placeId);
         }
 
 

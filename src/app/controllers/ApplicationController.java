@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.models.Place;
+import app.models.WeatherForecast;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Date;
@@ -15,21 +16,21 @@ import java.util.List;
 public class ApplicationController extends AbstractController{
 
     private List<Place> places;
-    private Place currentPlace;
-    private Date currentTime;
+    private Place selectedPlace;
+    private Date selectedTime;
 
     public ApplicationController() {
         super();
         this.places = Place.createFromXml(this, "places.xml");
-        this.currentPlace = places.get(0);
-        this.currentPlace.setActive(true);
+        this.selectedPlace = places.get(0);
+        this.selectedPlace.setActive(true);
 
-        Object[] timeSeries = this.currentPlace.forecast.getTimeSeries();
+        Object[] timeSeries = this.selectedPlace.forecast.getTimeSeries();
 
         if(timeSeries.length > 0) {
-            this.currentTime = (Date) timeSeries[0];
+            this.selectedTime = (Date) timeSeries[0];
         } else {
-            this.currentTime = null;
+            this.selectedTime = null;
         }
 
     }
@@ -40,8 +41,8 @@ public class ApplicationController extends AbstractController{
      *
      * @return place that is currently selected
      */
-    public Place getCurrentPlace() {
-        return currentPlace;
+    public Place getSelectedPlace() {
+        return selectedPlace;
     }
 
 
@@ -62,7 +63,7 @@ public class ApplicationController extends AbstractController{
      * @return string containing temperature in degrees
      */
     public String getTemperature() {
-        return currentPlace.forecast.getTemperature(currentTime);
+        return selectedPlace.forecast.getTemperature(selectedTime);
     }
 
 
@@ -71,8 +72,8 @@ public class ApplicationController extends AbstractController{
      *
      * @return date representing the selected time
      */
-    public Date getCurrentTime() {
-        return currentTime;
+    public Date getSelectedTime() {
+        return selectedTime;
     }
 
 
@@ -85,10 +86,25 @@ public class ApplicationController extends AbstractController{
      *
      * @param id of the the place to change to
      */
-    public void changeCurrentPlace(int id) {
-        this.currentPlace.setActive(false);
-        this.currentPlace = places.get(id);
-        this.currentPlace.setActive(true);
+    public void changeSelectedPlace(int id) {
+        this.selectedPlace.setActive(false);
+        this.selectedPlace = places.get(id);
+        this.selectedPlace.setActive(true);
+    }
+
+    /**
+     * Function to set cache expiration time for a place
+     *
+     * @param minutes new value for cache expiration time
+     */
+    public void changeCacheExpirationTime(int minutes) {
+        int oldValue = WeatherForecast.getCacheExpirationTime();
+        WeatherForecast.setCacheExpirationTime(minutes);
+        propertyChange(new PropertyChangeEvent(this, "cacheExpirationTime", oldValue, minutes));
+    }
+
+    public int getSelectedCacheExpirationTime() {
+        return WeatherForecast.getCacheExpirationTime();
     }
 
 
@@ -100,8 +116,8 @@ public class ApplicationController extends AbstractController{
      * @param time to view temperature for
      */
     public void changeSelectedTime(Date time) {
-        Date oldValue = this.currentTime;
-        this.currentTime = time;
-        propertyChange(new PropertyChangeEvent(this, "currentTime", time, oldValue));
+        Date oldValue = this.selectedTime;
+        this.selectedTime = time;
+        propertyChange(new PropertyChangeEvent(this, "selectedTime", time, oldValue));
     }
 }
