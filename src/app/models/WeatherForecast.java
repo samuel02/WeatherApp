@@ -78,6 +78,7 @@ public class WeatherForecast {
         return cacheExpirationTime;
     }
 
+    
     /**
      * Update the forecast with data from YR.no.
      *
